@@ -8,6 +8,7 @@ class News_listing_controller extends GetxController{
   TextEditingController searchcontroller= TextEditingController() ;
   // NewsListingPojo? newslisting;
   var newslistings = <Articles>[].obs;
+  var searchlistings = <Articles>[].obs;
   @override
   void onInit() {
     super.onInit();
@@ -28,6 +29,8 @@ class News_listing_controller extends GetxController{
         final newslisting=NewsListingPojo.fromJson(decodedData);
         newslistings.value=newslisting.articles!;
         update();
+        searchlistings.refresh();
+        newslistings.refresh();
       } else {
         print("Error:-something wrong");
       }
@@ -35,4 +38,21 @@ class News_listing_controller extends GetxController{
     print("Error:-"+e.toString());
     }
   }
+  onSearchTextChanged(String text) async {
+    searchlistings.clear();
+    if (text.isEmpty) {
+      getnews_listing();
+      searchlistings.refresh();
+      newslistings.refresh();
+      return;
+    }
+
+    newslistings.forEach((userDetail) {
+      if (userDetail.title!.contains(text)) searchlistings.add(userDetail);
+      searchlistings.refresh();
+      newslistings.refresh();
+    });
+
+    searchlistings.refresh();
+    newslistings.refresh();  }
 }

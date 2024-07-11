@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:esys_flutter_share_plus/esys_flutter_share_plus.dart';
 import 'package:sizer/sizer.dart';
 
 class News_detail_screen extends StatelessWidget {
@@ -25,6 +26,18 @@ class News_detail_screen extends StatelessWidget {
             color: Colors.black,
           ),
         ),
+        actions: [
+          GestureDetector(
+              onTap: (){
+                Share.text(news_desc, news_title, 'text/plain');
+                // Share.share(news_desc, subject: news_title);
+
+              },
+              child: Icon(Icons.share,color: Colors.black,)),
+          SizedBox(
+            width: 3.w,
+          )
+        ],
       ),
       body: SafeArea(
         child: Container(
@@ -99,4 +112,6 @@ class News_detail_screen extends StatelessWidget {
       ),
     );
   }
+
+
 }

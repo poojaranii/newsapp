@@ -34,6 +34,8 @@ class News_listing_screen extends StatelessWidget {
               SizedBox(
                 height: 2.h,
               ),
+              controller.searchcontroller.text.isNotEmpty?
+              searchlisting():
               news_listing_view()
             ],
           ),
@@ -43,16 +45,14 @@ class News_listing_screen extends StatelessWidget {
   }
   Widget searchview(){
     return Container(
-      child: Container(
-        child: TextFormField(
-          onChanged: (value){
-
-          },
-          controller: controller.searchcontroller,
-          decoration: InputDecoration(
-            hintText: "Search"
-
-          ),
+      child: TextFormField(
+        textInputAction: TextInputAction.search,
+        onChanged: (value){
+          controller.onSearchTextChanged(value);
+        },
+        controller: controller.searchcontroller,
+        decoration: InputDecoration(
+          hintText: "Search",
         ),
       ),
     );
@@ -106,6 +106,55 @@ class News_listing_screen extends StatelessWidget {
       ),
     );
   }
+  Widget search_element(index){
+    return GestureDetector(
+      onTap: (){
+        Get.to(News_detail_screen(news_title: controller.searchlistings.elementAt(index).title??"",news_desc: controller.searchlistings.elementAt(index).description??"",news_image: controller.searchlistings.elementAt(index).urlToImage??"",news_pub_date: controller.searchlistings!.elementAt(index).publishedAt??"",));
+      },
+      child: Container(
+        margin: EdgeInsets.only(bottom: 10),
+        child: Row(
+          mainAxisAlignment:MainAxisAlignment.spaceBetween,
+          children: [
+            Container(
+            width: 15.h,height: 15.h,
+              decoration: BoxDecoration(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.circular(20),
+                image: DecorationImage(
+                  image: NetworkImage(controller.searchlistings!.elementAt(index).urlToImage.toString(),),fit: BoxFit.fill,
+                )
+              ),
+            ),
+            Container(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                      width:60.w,
+                      child: Text(controller.searchlistings!.elementAt(index).title??"",style: TextStyle(fontSize: 15,fontWeight: FontWeight.w600),)),
+                  SizedBox(
+                    height: 0.5.h,
+                  ),
+                  Container(
+                      width:60.w,
+                      child: Text(controller.searchlistings!.elementAt(index).description??"",style: TextStyle(fontWeight: FontWeight.w400,overflow: TextOverflow.ellipsis,),maxLines: 3,)),
+                  SizedBox(
+                    height: 0.5.h,
+                  ),
+                  Container(
+                      width:60.w,
+                      child: Text(controller.searchlistings!.elementAt(index).publishedAt??"",style: TextStyle(fontWeight: FontWeight.w400,overflow: TextOverflow.ellipsis,fontSize: 12,color: Colors.grey),maxLines: 2,)),
+                ],
+              ),
+            )
+          ],
+        ),
+
+      ),
+    );
+  }
   Widget news_listing_view(){
     return Expanded(
       child:
@@ -116,4 +165,15 @@ class News_listing_screen extends StatelessWidget {
       Center(child: CircularProgressIndicator()))
     );
   }
+  Widget searchlisting(){
+    return Expanded(
+      child:
+      Obx(()=> controller.searchlistings.isNotEmpty?
+      ListView.builder(itemCount: controller.searchlistings.length,itemBuilder: (context,index){
+        return search_element(index);
+      }):
+      Center(child: Text("No Search Found")))
+    );
+  }
+
 }
