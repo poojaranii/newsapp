@@ -46,7 +46,6 @@ class News_listing_screen extends StatelessWidget {
       child: Container(
         child: TextFormField(
           onChanged: (value){
-
           },
           controller: controller.searchcontroller,
           decoration: InputDecoration(
