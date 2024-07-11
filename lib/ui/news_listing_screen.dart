@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -15,7 +14,6 @@ class News_listing_screen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar:  ,
       body: SafeArea(
         child: Container(
           margin: EdgeInsets.only(left: MediaQuery.of(context).size.width/100*3,right: MediaQuery.of(context).size.width/100*3,),
